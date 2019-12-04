@@ -8,7 +8,7 @@ import os
 from timeit import default_timer as timer
 
 PORT = 9113
-dn = '"CN=GS AirHospital Usuarios,OU=AirHospital,OU=OUGrupos,DC=sanitas,DC=dom"'
+dn = os.environ['USERTOSEARCH']
 comando = 'bash /usr/local/bin/ldap_exporter-query.sh ' + dn
 
 class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
@@ -25,7 +25,7 @@ class CustomHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             end = timer()
             queryTime = end - start
             # queryResult[0] debe tener 'dn: uid=ISORO2G,ou=personales,ou=usuarios,dc=mutua,dc=es'
-            if " ".join(queryResult[0].split(' ')[1:]) == dn.replace('"', ''):
+            if (queryResult[0]).split(' ')[1].split(',')[0].split('=')[1] == dn:
                 self.wfile.write('ldap_query_time ' + str(queryTime) +'\n')
 
             return

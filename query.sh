@@ -1,5 +1,5 @@
 #!/bin/bash
-ldapsearch -xLLL -H "'$LDAPURI'" -D "'$BINDDN'" -w "'$PASSWORD'" -b "'$SEARCHBASE'" "'$USERTOSEARCH'"
+ldapsearch -xLLL -H "'$LDAPURI'" -D "'$BINDDN'" -w "'$PASSWORD'" -b "'$SEARCHBASE'" "sAMAccountName='$USERTOSEARCH'"
 
 
 
