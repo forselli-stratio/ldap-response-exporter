@@ -82,10 +82,18 @@ fi
 
 login_vault
 
-#Download keytab specified in deployment json
-set +eu
-    getKrb userland ${VAULT_KEYTAB_NAME} ${VAULT_KEYTAB_KEY} . ${VAULT_KEYTAB_PRINCIPAL_KEY}
-set -eu
 
 
-/usr/bin/python3 /check-kinit-http.py
+/usr/bin/python2.7 /ldap-response-exporter.py
+
+
+
+
+getPass userland $SERVICE_ID keystore pass
+#me descargo la password, tiene que estar en una carpeta dentro de /userland/passwords, en plan /userland/passwords/ldap-response-exporter/password{pass=XXXX}  
+SERVICE_ID=${SERVICE_ID//[.-]/_}
+TMP=${SERVICE_ID^^}_KEYSTORE_PASS
+ROOT_PASS=${!TMP}
+#hasta aqui, gestiono la password                                                    
+echo "export ROOT_PASS=\"$(echo $ROOT_PASS)\"" >> /root/.bashrc  
+bash
